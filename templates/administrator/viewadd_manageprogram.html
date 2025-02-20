@@ -1,0 +1,40 @@
+
+
+ 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Programs</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary p-3">
+        <a class="navbar-brand" href="#"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+    </nav>
+        
+    <div class="container mt-4">
+        <h3>Manage Programs</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="program_id" class="form-label
+                ">Institution Name</label>
+                <select class="form-control" id="program_id" name="institution_id">
+                    <option value="#">-----please select an institute-------</option>
+                    {% for i in data %}
+                    <option value="{{ i.id }}">{{ i.institution_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="program_name" class="form-label
+                ">Program Name</label>
+                <input type="text" class="form-control" id="program_name" name="department_name">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+           </div>
+</body>
+</html>

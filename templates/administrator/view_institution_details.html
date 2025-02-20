@@ -1,0 +1,53 @@
+
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>View Institution Details</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary p-3">
+        <a class="navbar-brand" href="#"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+    </nav>
+      
+    <div class="container mt-4">
+        <h3>Institution Details</h3>
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>id</th>
+                    <th>Institution Name</th>
+                    <th>Institution Email</th>
+                    <th>institution contact</th>
+                    <th>Institution Address</th>
+                    <th>Accrediation</th>
+                    <th>
+                        <a href="/institution_details">add</a>
+                    </th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{forloop.counter}}</td>
+                    <td>{{ i.institution_name }}</td>
+                
+                    <td>{{i.institution_email}}</td>
+                    
+                    <td>{{i.institution_contact}}</td>
+                    <td>{{i.institution_address}}</td>
+
+                    <td>{{i.institution_accreditation }}</td>
+                    <td>
+                        
+                        <a href="/editint/{{i.id}}">edit</a>
+                        <a href="/deleteint/{{i.id}}">delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>

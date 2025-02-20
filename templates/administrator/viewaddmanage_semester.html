@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Semester</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary p-3">
+        <a class="navbar-brand" href="#">Admin Dashboard</a>
+    </nav>
+
+    <div class="container mt-4">
+        <h3 class="mb-4">Manage Semester</h3>
+        <form method="POST">
+            {% csrf_token %}
+            <div class="mb-3">
+                <label for="course" class="form-label">Select Course</label>
+                <select class="form-select" id="course" name="course_id">
+                    <option selected disabled>Select Course</option>
+                    {% for i in data %}
+                    <option value="{{i.id}}">{{ i.course_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="mb-3">
+                <label for="semester" class="form-label">Select Semester</label>
+                <select class="form-select" id="semester" name="semester_name">
+                    <option selected disabled>Select Semester</option>
+                    <option value="semester 1">Semester 1</option>
+                    <option value="semester 2">Semester 2</option>
+                    <option value="3">Semester 3</option>
+                    <option value="4">Semester 4</option>
+                    <option value="5">Semester 5</option>
+                    <option value="6">Semester 6</option>
+                </select>
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+</body>
+</html>
+
+

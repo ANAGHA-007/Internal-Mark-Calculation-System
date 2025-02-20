@@ -1,0 +1,55 @@
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manage Students</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav class="navbar navbar-dark bg-primary p-3">
+        <a class="navbar-brand" href="#"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+    </nav>
+
+    <div class="container mt-4">
+        {% csrf_token %}
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <h3>Manage Students</h3>
+            <a href="/view_addstudents" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add
+            </a>
+        </div>
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Admission number</th>
+                    <th>Student Name</th>
+                    <th>Student Email</th>
+                    <th>Student Phone</th>
+                    <th>Student Address</th>
+                    <th class="text-end">Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for i in data %}
+                <tr>
+                    <td>{{ i.addmission_number }}</td>
+                    <td>{{ i.student_name }}</td>
+                    <td>{{ i.student_email }}</td>
+                    <td>{{ i.student_phone }}</td>
+                    <td>{{ i.student_address }}</td>
+                    <td class="text-end">
+                        <a href="/view_editstudents/{{ i.id }}" class="btn btn-primary btn-sm">Edit</a>
+                        <a href="/deletestu/{{ i.id }}" class="btn btn-danger btn-sm" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
