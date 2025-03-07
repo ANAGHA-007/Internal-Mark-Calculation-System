@@ -1,50 +1,126 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Manage Courses</title>
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+        <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> <!-- jQuery -->
+        <style>
+            body {
+                font-family: 'Arial', sans-serif;
+                margin-top: 20px;
+            }
+            .navbar {
+                background-color: #42a5f5;
+                padding: 15px;
+            }
+            .navbar-brand {
+                color: white;
+                font-size: 1.5rem;
+            }
+            .form-label {
+                font-weight: bold;
+                color: #1e88e5;
+                font-size: 1rem;
+            }
+            .form-control {
+                border-radius: 8px;
+                padding: 8px;
+                margin-bottom: 15px;
+                font-size: 0.9rem;
+                box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.1);
+            }
+            .btn-custom {
+                background: #1e88e5;
+                color: white;
+                border-radius: 20px;
+                padding: 8px 18px;
+                font-weight: bold;
+                transition: 0.3s;
+            }
+            .btn-custom:hover {
+                background: #1565c0;
+            }
+            .container {
+                max-width: 800px;
+                margin-top: 30px;
+            }
+        </style>
+    </head>
+    <body>
+        <nav class="navbar navbar-dark p-3">
+            <a class="navbar-brand" href="/adminhome"> <i class="fas fa-book"></i> Manage Courses</a>
+        </nav>
 
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Courses</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-</head>
-<body>
-    <nav class="navbar navbar-dark bg-primary p-3">
-        <a class="navbar-brand" href="#"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
-    </nav>
-         
-    <div class="container mt-4">
-        <h3>Manage Courses</h3>
-        <form method="POST">
-            {% csrf_token %}
+        <div class="container">
+            <form method="POST">
+                {% csrf_token %}
 
-            <div class="mb-3">
-                <label for="course_name" class="form-label">Department</label>
-                <select class="form-control" id="course_name" name="dep_id">
-                    <option value="#">-----please select a department-------</option>
-                    {% for i in data %}
-                    <option value="{{ i.id }}">{{ i.department_name }}</option>
-                    {% endfor %}
-                </select>
-            </div>
-            
-            <div class="mb-3">
-                <label for="course_name" class="form-label
-                ">Course Name</label>
-                <input type="text" class="form-control" id="course_name" name="course_name">
-            </div>
-            <div class="mb-3">
-                <label for="course_duration" class="form-label
-                ">Course Code</label>
-                <input type="text" class="form-control" id="course_duration" name="course_code">
-            </div>
-            <div class="mb-3">
-                <label for="course_type" class="form-label
-                ">Course credit</label>
-                <input type="text" class="form-control" id="course_type" name="course_credit">
-            </div>
-          
-            <button type="submit" class="btn btn-primary">Submit</button>
-        </form>
-    </div>
+                <!-- Institution Dropdown -->
+                <div class="form-group">
+                    <label for="institution_select" class="form-label">Institution</label>
+                    <select class="form-control" id="institution_select" name="institution_id">
+                        <option value="">--- Please select an institution ---</option>
+                        {% for i in data %}
+                            <option value="{{ i.id }}">{{ i.institution_name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+
+                <!-- Department Dropdown (Initially Empty) -->
+                <div class="form-group">
+                    <label for="department_select" class="form-label">Department</label>
+                    <select class="form-control" id="department_select" name="dep_id">
+                        <option value="">--- Please select a department ---</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="course_name" class="form-label">Course Name</label>
+                    <input type="text" class="form-control" id="course_name" name="course_name" placeholder="Enter course name">
+                </div>
+
+                <div class="form-group">
+                    <label for="course_code" class="form-label">Course Code</label>
+                    <input type="text" class="form-control" id="course_code" name="course_code" placeholder="Enter course code">
+                </div>
+
+                <div class="form-group">
+                    <label for="course_credit" class="form-label">Course Credit</label>
+                    <input type="text" class="form-control" id="course_credit" name="course_credit" placeholder="Enter course credit">
+                </div>
+
+                <button type="submit" class="btn btn-custom">Submit</button>
+            </form>
+        </div>
+
+        <script>
+            $(document).ready(function(){
+                $("#institution_select").change(function(){
+                    var institution_id = $(this).val();
+                    
+                    if(institution_id){
+                        $.ajax({
+                            url: "{% url 'get_departments' %}", // URL for the AJAX request
+                            type: "GET",
+                            data: {'institution_id': institution_id},
+                            success: function(data){
+                                $("#department_select").html('<option value="">--- Please select a department ---</option>');
+                                $.each(data, function(index, department){
+                                    $("#department_select").append('<option value="'+ department.id +'">'+ department.department_name +'</option>');
+                                });
+                            }
+                        });
+                    } else {
+                        $("#department_select").html('<option value="">--- Please select a department ---</option>');
+                    }
+                });
+            });
+        </script>
+
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     </body>
-</html>
+    </html>

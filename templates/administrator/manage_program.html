@@ -1,55 +1,129 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manage Programs</title>
+    <title>Admin Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
     <style>
-        .cssbuttons-io-button {
-            display: flex;
-            align-items: center;
-            font-family: inherit;
-            cursor: pointer;
-            font-weight: 500;
-            font-size: 16px;
-            padding: 0.7em 1.4em 0.7em 1.1em;
+        body {
+            font-family: 'Poppins', sans-serif;
+        }
+        .navbar {
+            padding: 15px;
+            background-color: #1e88e5; /* Blue color for navbar */
+        }
+        .navbar-brand {
+            font-weight: bold;
+            color: white !important; /* White text for brand */
+            font-size: 1.5rem;
+        }
+        .container {
+            margin-top: 40px;
+        }
+        h3 {
+            color: #1e88e5; /* Darker blue for text */
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        .table {
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        .table th, .table td {
+            vertical-align: middle;
+        }
+        .table th {
+            background-color: #42a5f5; /* Blue header for table */
             color: white;
-            background: linear-gradient(0deg, rgba(20, 167, 62, 1) 0%, rgba(102, 247, 113, 1) 100%);
+        }
+        .table td button {
+            color: white;
+            font-weight: bold;
+            padding: 6px 12px; /* Adjusted padding for smaller buttons */
             border: none;
-            box-shadow: 0 0.7em 1.5em -0.5em #14a73e98;
-            letter-spacing: 0.05em;
-            border-radius: 20em;
+            border-radius: 4px; /* Slightly rounded corners */
+            display: inline-flex;
+            align-items: center;
+            justify-content: center; /* Centering text and icons */
+            cursor: pointer;
+            transition: 0.3s;
+            width: 80px; /* Set width for small rectangular button */
+            height: 30px; /* Set height for small rectangular button */
+            text-align: center;
+            font-size: 0.85rem; /* Smaller font size for a compact look */
         }
-        .cssbuttons-io-button:hover {
-            box-shadow: 0 0.5em 1.5em -0.5em #14a73e98;
+        .table td button i {
+            font-size: 1rem; /* Slightly smaller icon */
         }
-        .cssbuttons-io-button:active {
-            box-shadow: 0 0.3em 1em -0.5em #14a73e98;
+        .table td button:hover {
+            opacity: 0.8;
+        }
+        .table td button.add-btn {
+            background-color: #388e3c; /* Green for Add */
+        }
+        .table td button.add-btn:hover {
+            background-color: #2e7d32;
+        }
+        .table td button.edit-btn {
+            background-color: #ff9800; /* Orange for Edit */
+        }
+        .table td button.edit-btn:hover {
+            background-color: #fb8c00;
+        }
+        .table td button.delete-btn {
+            background-color: #f44336; /* Red for Delete */
+        }
+        .table td button.delete-btn:hover {
+            background-color: #e53935;
+        }
+        .table i {
+            margin-right: 5px; /* Adjusted icon margin */
+        }
+        .add-btn-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 20px;
+        }
+        .action-btns {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+        }
+        .action-btns button {
+            margin-bottom: 5px;
+        }
+        /* Adjusted Actions Column Width */
+        .table th:last-child, .table td:last-child {
+            width: 120px; /* Set width for Actions column */
+            text-align: center;
         }
     </style>
 </head>
 <body>
-    <nav class="navbar navbar-dark bg-primary p-3">
-        <a class="navbar-brand" href="#"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+    <!-- Admin Dashboard Heading -->
+    <nav class="navbar navbar-light">
+        <a class="navbar-brand" href="/adminhome">
+            <i class="fas fa-tachometer-alt"></i> Admin Dashboard
+        </a>
     </nav>
-    
-    <div class="container mt-4">
-        <div class="d-flex justify-content-between align-items-center mb-3">
-            <h3>Manage Programs</h3>
-            <a href="/viewadd_manageprogram " class="cssbuttons-io-button">
-                <i class="fas fa-plus me-2"></i>Add</a>
-            
-        </div>
 
+    <div class="container mt-4">
+        <div class="add-btn-container">
+            <button class="add-btn" onclick="window.location.href='/viewadd_manageprogram'">
+                <i class="fas fa-plus"></i> Add Program
+            </button>
+        </div>
+        <h3>Manage Programs</h3>
         <table class="table table-bordered">
             <thead>
                 <tr>
-                    <th>Institution name</th>
-                    <th>Program Name</th>
-                    <th class="text-end">Actions</th>
+                    <th>Institution Name</th>
+                    <th>Department Name</th>
+                    <th>Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -57,9 +131,13 @@
                 <tr>
                     <td>{{ i.institution_id.institution_name }}</td>
                     <td>{{ i.department_name }}</td>
-                    <td class="text-end">
-                        <a href="/editpgm/{{i.id }}" class="btn btn-sm btn-warning">Edit</a>
-                        <a href="/deletepgm/{{ i.id }}" class="btn btn-sm btn-danger" onclick="return confirm('Are you sure you want to delete this program?');">Delete</a>
+                    <td class="action-btns">
+                        <button class="edit-btn" onclick="window.location.href='/editpgm/{{ i.id }}'">
+                            <i class="fas fa-edit"></i> Edit
+                        </button>
+                        <button class="delete-btn" onclick="window.location.href='/deletepgm/{{ i.id }}'">
+                            <i class="fas fa-trash-alt"></i> Delete
+                        </button>
                     </td>
                 </tr>
                 {% endfor %}
@@ -70,6 +148,4 @@
 </html>
 
 
-
-        
 

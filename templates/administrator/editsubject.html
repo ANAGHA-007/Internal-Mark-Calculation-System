@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Edit Subject</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            background-color: #e3f2fd;
+        }
+        .navbar {
+            background-color: #42a5f5 !important;
+        }
+        .form-container {
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-dark p-3">
+        <a class="navbar-brand text-white" href="#">Admin Dashboard</a>
+    </nav>
+    
+    <div class="container mt-5">
+        <div class="form-container">
+            <h3 class="mb-4">Edit Subject</h3>
+            <form method="post">
+                {% csrf_token %}
+             
+                <!-- Institution Selection -->
+                <div class="mb-3">
+                    <label for="institution_id" class="form-label">Select Institution</label>
+                    <select class="form-control" id="institution_id" name="institution_id" required>
+                        <option value="">Select Institution</option>
+                        {% for institution in institutions %}
+                            <option value="{{ institution.id }}" {% if institution.id == institution.id %} selected {% endif %}>
+                                {{ institution.institution_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Department Selection -->
+                <div class="mb-3">
+                    <label for="department_id" class="form-label">Select Department</label>
+                    <select class="form-control" id="department_id" name="department_id" required>
+                        <option value="">Select Department</option>
+                        {% for department in departments %}
+                            <option value="{{ department.id }}" {% if department.id == department.id %} selected {% endif %}>
+                                {{ department.department_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Course Selection -->
+                <div class="mb-3">
+                    <label for="course_id" class="form-label">Select Course</label>
+                    <select class="form-control" id="course_id" name="course_id" required>
+                        <option value="">Select Course</option>
+                        {% for course in courses %}
+                            <option value="{{ course.id }}" {% if course.id == course.id %} selected {% endif %}>
+                                {{ course.course_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Semester Selection -->
+                <div class="mb-3">
+                    <label for="sem_id" class="form-label">Select Semester</label>
+                    <select class="form-control" id="sem_id" name="sem_id" required>
+                        <option value="">Select Semester</option>
+                        {% for semester in semesters %}
+                            <option value="{{ semester.id }}" {% if semester.id == semester.id %} selected {% endif %}>
+                                {{ semester.semester_name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+                
+                <!-- Subject Name -->
+                <div class="mb-3">
+                    <label for="subject_name" class="form-label">Subject Name</label>
+                    <input type="text" class="form-control" id="subject_name" name="subject_name" value="{{ subject.subject_name }}" required>
+                </div>
+                
+                <!-- Subject Code -->
+                <div class="mb-3">
+                    <label for="subject_code" class="form-label">Subject Code</label>
+                    <input type="text" class="form-control" id="subject_code" name="subject_code" value="{{ subject.subject_code }}" required>
+                </div>
+                
+                <!-- Subject Credit -->
+                <div class="mb-3">
+                    <label for="subject_credit" class="form-label">Subject Credit</label>
+                    <input type="text" class="form-control" id="subject_credit" name="subject_credit" value="{{ subject.subject_credit }}" required>
+                </div>
+                
+                <!-- Submit Button -->
+                <button type="submit" class="btn btn-primary">Update</button>
+            </form>
+        </div>
+    </div>
+    
+    <script>
+        $(document).ready(function(){
+            // On Institution Selection Change
+            $('#institution_id').change(function(){
+                let institution_id = $(this).val();
+                $.ajax({
+                    url: '/get_departments/',  // URL for the departments endpoint
+                    data: {'institution_id': institution_id},
+                    success: function(data) {
+                        $('#department_id').html('<option value="">Select Department</option>');  // Clear previous options
+                        $.each(data, function(index, department){  // Loop through the response data
+                            $('#department_id').append('<option value="' + department.id + '">' + department.department_name + '</option>');  // Add new options
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching departments:", error);
+                    }
+                });
+            });
+        
+            // On Department Selection Change
+            $('#department_id').change(function(){
+                let department_id = $(this).val();
+                $.ajax({
+                    url: '/get_courses/',  // URL for the courses endpoint
+                    data: {'department_id': department_id},
+                    success: function(data) {
+                        $('#course_id').html('<option value="">Select Course</option>');  // Clear previous options
+                        $.each(data, function(index, course){  // Loop through the response data
+                            $('#course_id').append('<option value="' + course.id + '">' + course.course_name + '</option>');  // Add new options
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching courses:", error);
+                    }
+                });
+            });
+        
+            // On Course Selection Change
+            $('#course_id').change(function(){
+                let course_id = $(this).val();
+                $.ajax({
+                    url: '/get_semesters/',  // URL for the semesters endpoint
+                    data: {'course_id': course_id},
+                    success: function(data) {
+                        $('#sem_id').html('<option value="">Select Semester</option>');  // Clear previous options
+                        $.each(data, function(index, semester){  // Loop through the response data
+                            $('#sem_id').append('<option value="' + semester.id + '">' + semester.semester_name + '</option>');  // Add new options
+                        });
+                    },
+                    error: function(xhr, status, error) {
+                        console.error("Error fetching semesters:", error);
+                    }
+                });
+            });
+        });
+    </script>
+    
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

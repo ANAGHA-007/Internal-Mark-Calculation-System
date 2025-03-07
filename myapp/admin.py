@@ -15,4 +15,5 @@ admin.site.register(Grievances_model)
 admin.site.register(sem_model)
 admin.site.register(exam_model)
 admin.site.register(Notification_model)
+admin.site.register(Feedback_model)
 

@@ -5,46 +5,91 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Edit Students</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">  
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
     <nav class="navbar navbar-dark bg-primary p-3">
-        <a class="navbar-brand" href="#"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+        <a class="navbar-brand" href="/adminhome"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
     </nav>
        
     <div class="container mt-4">
         <h3>Edit Students</h3>
         <form method="POST">
             {% csrf_token %}
+            
+            <!-- Department Select Box -->
             <div class="mb-3">
-                <label for="student_name" class="form-label">Admission No</label>
-                <input type="number" class="form-control" id="student_name" name="addmission_number" value="{{ val.addmission_number }}">
+                <label for="department_name" class="form-label">Department</label>
+                <select class="form-control" id="department_name" name="department_id">
+                    <option value="#">-----please select a department-------</option>
+                    {% for i in departments %}
+                    <option value="{{ i.id }}" {% if i.id == val.department_id.id %} selected {% endif %}>{{ i.department_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
+
+            <!-- Course Select Box -->
             <div class="mb-3">
-                <label for="student_name" class="form-label">Institution</label>
-                <select class="form-control" id="student_name" name="institution_id">
-                    <option value="#">-----please select a institution-------</option>
-                    {% for i in data %}
+                <label for="course_name" class="form-label">Course</label>
+                <select class="form-control" id="course_name" name="course_id">
+                    <option value="#">-----please select a course-------</option>
+                    {% for i in courses %}
+                    <option value="{{ i.id }}" {% if i.id == val.course_id.id %} selected {% endif %}>{{ i.course_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <!-- Semester Select Box -->
+            <div class="mb-3">
+                <label for="semester" class="form-label">Semester</label>
+                <select class="form-control" id="semester" name="semester">
+                    <option value="#">-----please select a semester-------</option>
+                    <option value="1" {% if val.semester == 1 %} selected {% endif %}>Semester 1</option>
+                    <option value="2" {% if val.semester == 2 %} selected {% endif %}>Semester 2</option>
+                    <option value="3" {% if val.semester == 3 %} selected {% endif %}>Semester 3</option>
+                    <option value="4" {% if val.semester == 4 %} selected {% endif %}>Semester 4</option>
+                    <option value="5" {% if val.semester == 5 %} selected {% endif %}>Semester 5</option>
+                    <option value="6" {% if val.semester == 6 %} selected {% endif %}>Semester 6</option>
+                    <option value="7" {% if val.semester == 7 %} selected {% endif %}>Semester 7</option>
+                    <option value="8" {% if val.semester == 8 %} selected {% endif %}>Semester 8</option>
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label for="institution_name" class="form-label">Institution</label>
+                <select class="form-control" id="institution_name" name="institution_id">
+                    <option value="#">-----please select an institution-------</option>
+                    {% for i in institutions %}
                     <option value="{{ i.id }}" {% if i.id == val.institution_id.id %} selected {% endif %}>{{ i.institution_name }}</option>
                     {% endfor %}
                 </select>
             </div>
+
+            <div class="mb-3">
+                <label for="addmission_number" class="form-label">Admission No</label>
+                <input type="number" class="form-control" id="addmission_number" name="addmission_number" value="{{ val.addmission_number }}">
+            </div>
+
             <div class="mb-3">
                 <label for="student_name" class="form-label">Student Name</label>
                 <input type="text" class="form-control" id="student_name" name="student_name" value="{{ val.student_name }}">
             </div>
+
             <div class="mb-3">
                 <label for="student_email" class="form-label">Student Email</label>
                 <input type="email" class="form-control" id="student_email" name="student_email" value="{{ val.student_email }}">
             </div>
+
             <div class="mb-3">
                 <label for="student_phone" class="form-label">Student Phone</label>
                 <input type="text" class="form-control" id="student_phone" name="student_phone" value="{{ val.student_phone }}">
             </div>
+
             <div class="mb-3">
                 <label for="student_address" class="form-label">Student Address</label>
                 <input type="text" class="form-control" id="student_address" name="student_address" value="{{ val.student_address }}">
             </div>
+
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>

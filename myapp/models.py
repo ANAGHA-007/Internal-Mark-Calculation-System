@@ -26,10 +26,6 @@ class faculty_model(models.Model):
     faculty_email = models.CharField(max_length=100, null=True, blank=True)
     faculty_phone = models.CharField(max_length=100, null=True, blank=True)
     faculty_address = models.CharField(max_length=100, null=True, blank=True)
-    
-
-
-
 
 class course_model(models.Model):
     dep_id = models.ForeignKey(department_model, on_delete=models.CASCADE, null=True, blank=True)
@@ -66,7 +62,13 @@ class mark_model(models.Model):
     exam_id = models.ForeignKey(exam_model, on_delete=models.CASCADE, null=True, blank=True)
     student_id = models.ForeignKey(student_model, on_delete=models.CASCADE, null=True, blank=True)
     mark = models.CharField(max_length=100, null=True, blank=True)
-
+    mark_outof=models.CharField(max_length=100,null=True, blank=True)
+    weightage=models.CharField(max_length=100,null=True, blank=True)
+    assignmentmark=models.CharField(max_length=100,null=True, blank=True)
+    assignment_outof=models.CharField(max_length=100,null=True, blank=True)
+    seminarmark=models.CharField(max_length=100,null=True, blank=True)
+    seminar_outof=models.CharField(max_length=100,null=True, blank=True)
+ 
 
 class Grievances_model(models.Model):
     teacher_id = models.ForeignKey(faculty_model, on_delete=models.CASCADE, null=True, blank=True)
@@ -79,4 +81,11 @@ class Notification_model(models.Model):
     title = models.CharField(max_length=100, null=True, blank=True)
     description = models.CharField(max_length=100, null=True, blank=True)
     date = models.CharField(max_length=100, null=True, blank=True)
+    
+class Feedback_model(models.Model):
+    student_id = models.ForeignKey(student_model, on_delete=models.CASCADE, null=True, blank=True)
+    teacher_id= models.ForeignKey(faculty_model, on_delete=models.CASCADE, null=True, blank=True)
+    feedback = models.CharField(max_length=100, null=True, blank=True)
+    reply = models.CharField(max_length=100, null=True, blank=True)
+    date = models.DateField(auto_now_add=True,null=True, blank=True)
     

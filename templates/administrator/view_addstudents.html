@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -9,44 +8,197 @@
 </head>
 <body>
     <nav class="navbar navbar-dark bg-primary p-3">
-        <a class="navbar-brand" href="#"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
+        <a class="navbar-brand" href="/adminhome"><i class="fas fa-tachometer-alt"></i> Admin Dashboard</a>
     </nav>
     
     <div class="container mt-4">
         <h3>Manage Students</h3>
-        <form method="POST">
+        <form id="studentForm" method="POST" action="/view_addstudents">
             {% csrf_token %}
+
             <div class="mb-3">
-                <label for="student_name" class="form-label">Admission No</label>
-                <input type="number" class="form-control" id="student_name" name="addmission_number">
-            </div>
-            <div class="mb-3">
-                <label for="student_name" class="form-label">Institution</label>
-                <select class="form-control" id="student_name" name="institution_id">
-                    <option value="#">-----please select a institution-------</option>
+                <label for="institution_name" class="form-label">Institution</label>
+                <select class="form-control" id="institution_name" name="institution_id">
+                    <option value="#">-----please select an institution-------</option>
                     {% for i in data %}
                     <option value="{{ i.id }}">{{ i.institution_name }}</option>
                     {% endfor %}
                 </select>
             </div>
+
             <div class="mb-3">
-                <label for="student_name" class="form-label">Student Name</label>
-                <input type="text" class="form-control" id="student_name" name="student_name">
+                <label for="department_name" class="form-label">Department</label>
+                <select class="form-control" id="department_name" name="department_id">
+                    <option value="#">-----please select a department-------</option>
+                    {% for i in data1 %}
+                    <option value="{{ i.id }}">{{ i.department_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
+
             <div class="mb-3">
-                <label for="student_email" class="form-label">Student Email</label>
-                <input type="email" class="form-control" id="student_email" name="student_email">
+                <label for="course_name" class="form-label">Course</label>
+                <select class="form-control" id="course_name" name="course_id">
+                    <option value="#">-----please select a course-------</option>
+                    {% for i in a %}
+                    <option value="{{ i.id }}">{{ i.course_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
+
             <div class="mb-3">
-                <label for="student_phone" class="form-label">Student Phone</label>
-                <input type="text" class="form-control" id="student_phone" name="student_phone">
+                <label for="semester" class="form-label">Semester</label>
+                <select class="form-control" id="semester" name="semester">
+                    <option value="#">-----please select a semester-------</option>
+                    {% for i in h %}
+                    <option value="{{ i.id }}">{{ i.semester_name }}</option>
+                    {% endfor %}
+                </select>
             </div>
-            <div class="mb-3">
-                <label for="student_address" class="form-label">Student Address</label>
-                <input type="text" class="form-control" id="student_address" name="student_address">
+
+            <div id="studentContainer">
+                <div class="student-entry">
+                    <div class="mb-3">
+                        <label for="admission_number_0" class="form-label">Admission No</label>
+                        <input type="number" class="form-control" id="admission_number_0" name="admission_number[]">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="student_name_0" class="form-label">Student Name</label>
+                        <input type="text" class="form-control" id="student_name_0" name="student_name[]">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="student_email_0" class="form-label">Student Email</label>
+                        <input type="email" class="form-control" id="student_email_0" name="student_email[]">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="student_phone_0" class="form-label">Student Phone</label>
+                        <input type="text" class="form-control" id="student_phone_0" name="student_phone[]">
+                    </div>
+
+                    <div class="mb-3">
+                        <label for="student_address_0" class="form-label">Student Address</label>
+                        <input type="text" class="form-control" id="student_address_0" name="student_address[]">
+                    </div>
+                </div>
             </div>
+
+            <button type="button" class="btn btn-success" onclick="addStudent()">Add More</button>
             <button type="submit" class="btn btn-primary">Submit</button>
         </form>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script>
+        let studentCount = 1; // Start from 1 because we already have one student entry
+
+        function addStudent() {
+            const container = document.getElementById("studentContainer");
+
+            const studentDiv = document.createElement("div");
+            studentDiv.classList.add("student-entry", "mb-3");
+            studentDiv.innerHTML = `
+                <hr>
+                <h5>Student ${studentCount + 1}</h5>
+                <div class="mb-3">
+                    <label for="admission_number_${studentCount}" class="form-label">Admission No</label>
+                    <input type="number" class="form-control" id="admission_number_${studentCount}" name="admission_number[]">
+                </div>
+
+                <div class="mb-3">
+                    <label for="student_name_${studentCount}" class="form-label">Student Name</label>
+                    <input type="text" class="form-control" id="student_name_${studentCount}" name="student_name[]">
+                </div>
+
+                <div class="mb-3">
+                    <label for="student_email_${studentCount}" class="form-label">Student Email</label>
+                    <input type="email" class="form-control" id="student_email_${studentCount}" name="student_email[]">
+                </div>
+
+                <div class="mb-3">
+                    <label for="student_phone_${studentCount}" class="form-label">Student Phone</label>
+                    <input type="text" class="form-control" id="student_phone_${studentCount}" name="student_phone[]">
+                </div>
+
+                <div class="mb-3">
+                    <label for="student_address_${studentCount}" class="form-label">Student Address</label>
+                    <input type="text" class="form-control" id="student_address_${studentCount}" name="student_address[]">
+                </div>
+
+                <button type="button" class="btn btn-danger" onclick="removeStudent(this)">Remove</button>
+            `;
+
+            container.appendChild(studentDiv);
+            studentCount++;
+
+            console.log('---------------------------------------------------------->')
+        }
+
+        function removeStudent(button) {
+            button.parentElement.remove();
+        }
+        $(document).ready(function() {
+            // Fetch departments based on the selected institution
+            $("#institution_name").change(function() {
+                let institutionId = $(this).val();
+                if (institutionId) {
+                    $.ajax({
+                        url: "{% url 'get_departments' %}",
+                        data: {'institution_id': institutionId},
+                        dataType: 'json',
+                        success: function(data) {
+                            let departmentDropdown = $("#department_name");
+                            departmentDropdown.empty().append('<option value="">----- Select a department -----</option>');
+                            data.forEach(dept => {
+                                departmentDropdown.append(`<option value="${dept.id}">${dept.department_name}</option>`);
+                            });
+                        }
+                    });
+                }
+            });
+    
+            // Fetch courses based on the selected department
+            $("#department_name").change(function() {
+                let departmentId = $(this).val();
+                if (departmentId) {
+                    $.ajax({
+                        url: "{% url 'get_courses' %}",
+                        data: {'department_id': departmentId},
+                        dataType: 'json',
+                        success: function(data) {
+                            let courseDropdown = $("#course_name");
+                            courseDropdown.empty().append('<option value="">----- Select a course -----</option>');
+                            data.forEach(course => {
+                                courseDropdown.append(`<option value="${course.id}">${course.course_name}</option>`);
+                            });
+                        }
+                    });
+                }
+            });
+    
+            // Fetch semesters based on the selected course
+            $("#course_name").change(function() {
+                let courseId = $(this).val();
+                if (courseId) {
+                    $.ajax({
+                        url: "{% url 'get_semesters' %}",
+                        data: {'course_id': courseId},
+                        dataType: 'json',
+                        success: function(data) {
+                            let semesterDropdown = $("#semester");
+                            semesterDropdown.empty().append('<option value="">----- Select a semester -----</option>');
+                            data.forEach(sem => {
+                                semesterDropdown.append(`<option value="${sem.id}">${sem.semester_name}</option>`);
+                            });
+                        }
+                    });
+                }
+            });
+        });
+        
+    </script>
+
 </body>
 </html>
